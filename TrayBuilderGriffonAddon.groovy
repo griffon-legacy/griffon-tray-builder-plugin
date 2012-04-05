@@ -21,6 +21,7 @@
  * @author Andres Almiray
  */
 
+import griffon.core.GriffonApplication
 import griffon.builder.tray.factory.*
 import griffon.builder.tray.impl.*
 
@@ -33,10 +34,10 @@ import org.slf4j.LoggerFactory
 class TrayBuilderGriffonAddon {
     private static final Logger LOG = LoggerFactory.getLogger('griffon.addon.tray.TrayBuilderGriffonAddon')
 
-    def factories = [:]
-    def props = [:]
+    // Map factories = [:]
+    // Map props = [:]
 
-    TrayBuilderGriffonAddon() {
+    void addonInit(GriffonApplication app) {
         try {
             def systemTrayClass = getClass().classLoader.loadClass("java.awt.SystemTray")
             if(systemTrayClass.isSupported()) {
