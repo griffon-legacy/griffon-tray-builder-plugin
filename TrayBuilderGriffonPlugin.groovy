@@ -66,14 +66,14 @@ Griffon's CompositeBuilder to be mixed&amp;matched with other [SwingBuilder base
 | Node       | Property     | Type        | Required | Bindable | Notes                                                                                    |
 | ---------- | ------------ | ----------- | -------- | -------- | ---------------------------------------------------------------------------------------- |
 | systemTray | trayIcons    | TrayIcon    | no       | no       | readonly                                                                                 |
-|            | trayIconSize | Dimension   | no       | no       | readonly                                                                                 |
-| trayIcon   | url          | URL         | yes      | no       |                                                                                          |
-|            | file         | File        | yes      | no       | can also be a `String`                                                                   |
-|            | inputStream  | InputStream | yes      | no       |                                                                                          |
-|            | resource     | String      | yes      | no       |                                                                                          |
-|            | class        | Class       | yes      | no       | only required if `resource` is specified.                                                |
-|            |              |             |          |          | specify one of `url`, `file`, `inputStream`, `resource` or use a `String` as node value. |
-|            |              |             |          |          | accepts `JPopupMenu` instances as children only.                                         |
+|            | trayIconSize | Dimension   | no       | no       | readonly                                                                                 |
+| trayIcon   | url          | URL         | yes      | no       |                                                                                          |
+|            | file         | File        | yes      | no       | can also be a `String`                                                                   |
+|            | inputStream  | InputStream | yes      | no       |                                                                                          |
+|            | resource     | String      | yes      | no       |                                                                                          |
+|            | class        | Class       | yes      | no       | only required if `resource` is specified.                                                |
+|            |              |             |          |          | specify one of `url`, `file`, `inputStream`, `resource` or use a `String` as node value. |
+|            |              |             |          |          | accepts `JPopupMenu` instances as children only.                                         |
 
 The following is an example of its usage provided by SwingPad as sample script:
 
