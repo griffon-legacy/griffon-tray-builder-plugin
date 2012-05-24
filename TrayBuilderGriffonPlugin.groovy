@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------
    TrayBuilder
-   Copyright (C) 2008-2010 Andres Almiray
+   Copyright (C) 2008-2012 Andres Almiray
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as
@@ -21,7 +21,7 @@
  * @author Andres Almiray
  */
 class TrayBuilderGriffonPlugin {
-    String version = '0.7'
+    String version = '0.8'
     // the version or versions of Griffon the plugin is designed for
     String griffonVersion = '0.9.5 > *'
     // the other plugins this plugin depends on

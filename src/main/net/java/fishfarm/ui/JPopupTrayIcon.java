@@ -4,23 +4,15 @@
 
 package net.java.fishfarm.ui;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.PopupMenu;
-import java.awt.TrayIcon;
-import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JDialog;
-import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
-import javax.swing.RootPaneContainer;
+import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import static griffon.util.GriffonApplicationUtils.isMacOSX;
+import static griffon.util.GriffonApplicationUtils.isWindows;
 
 
 /**
@@ -31,13 +23,10 @@ import javax.swing.event.PopupMenuListener;
  * @author Michael Bien
  */
 public class JPopupTrayIcon extends TrayIcon {
-
     private JPopupMenu menu;
-    
+
     private Window window;
     private PopupMenuListener popupListener;
-    
-    private final static boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().contains("windows");
 
     public JPopupTrayIcon(Image image) {
         super(image);
@@ -62,28 +51,19 @@ public class JPopupTrayIcon extends TrayIcon {
 
 
     private final void init() {
-
-
         popupListener = new PopupMenuListener() {
-
-            @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-//                System.out.println("popupMenuWillBecomeVisible");
             }
 
-            @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-//                System.out.println("popupMenuWillBecomeInvisible");
-                if(window != null) {
+                if (window != null) {
                     window.dispose();
                     window = null;
                 }
             }
 
-            @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
-//                System.out.println("popupMenuCanceled");
-                if(window != null) {
+                if (window != null) {
                     window.dispose();
                     window = null;
                 }
@@ -93,49 +73,57 @@ public class JPopupTrayIcon extends TrayIcon {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-//                System.out.println(e.getPoint());
                 showJPopupMenu(e);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-//                System.out.println(e.getPoint());
                 showJPopupMenu(e);
             }
         });
 
     }
 
-    private final void showJPopupMenu(MouseEvent e) {
-        if(e.isPopupTrigger() && menu != null) {
+    private void showJPopupMenu(MouseEvent e) {
+        if (e.isPopupTrigger() && menu != null) {
             if (window == null) {
 
-                if(IS_WINDOWS) {
-                    window = new JDialog((Frame)null);
-                    ((JDialog)window).setUndecorated(true);
-                }else{
-                    window = new JWindow((Frame)null);
+                if (isWindows()) {
+                    window = new JDialog((Frame) null);
+                    ((JDialog) window).setUndecorated(true);
+                } else {
+                    window = new JWindow((Frame) null);
                 }
                 window.setAlwaysOnTop(true);
                 Dimension size = menu.getPreferredSize();
 
                 Point centerPoint = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
-                if(e.getY() > centerPoint.getY())
-                    window.setLocation(e.getX(), e.getY() - size.height);
-                else
-                    window.setLocation(e.getX(), e.getY());
+
+                // Both e.getX() and e.getY() return values relative to
+                // e.getSource(), however in OSX these values are not translated
+                // to the correct location, thus we have to figure out the right
+                // locations in OSX. Sadly there's no way to figure out the X
+                // location of trayIcon thus the value for x is not aligned with
+                // the icon's x location :-(
+
+                int x = isMacOSX() ? e.getXOnScreen() : e.getX();
+                int y = isMacOSX() ? getSize().height : e.getY();
+
+                if (y > centerPoint.getY()) {
+                    window.setLocation(x, y - size.height);
+                } else {
+                    window.setLocation(x, y);
+                }
 
                 window.setVisible(true);
-                
-                menu.show(((RootPaneContainer)window).getContentPane(), 0, 0);
+
+                menu.show(((RootPaneContainer) window).getContentPane(), 0, 0);
 
                 // popup works only for focused windows
                 window.toFront();
-
             }
         }
     }
-
 
     public final JPopupMenu getJPopupMenu() {
         return menu;
@@ -148,5 +136,4 @@ public class JPopupTrayIcon extends TrayIcon {
         this.menu = menu;
         menu.addPopupMenuListener(popupListener);
     }
-
 }

@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------
    TrayBuilder
-   Copyright (C) 2008-2010 Andres Almiray
+   Copyright (C) 2008-2012 Andres Almiray
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as
@@ -19,19 +19,19 @@
 
 package griffon.builder.tray.factory
 
-import java.awt.SystemTray
-import java.awt.Image
-import java.awt.Toolkit
-
-import javax.swing.JPopupMenu
 import net.java.fishfarm.ui.JPopupTrayIcon
+
+import java.awt.Image
+import java.awt.SystemTray
+import java.awt.Toolkit
+import javax.swing.JPopupMenu
 
 /**
  * @author Andres Almiray
  */
 class TrayIconFactory extends AbstractFactory {
-    public Object newInstance( FactoryBuilderSupport builder, Object name, Object value, Map attributes )
-            throws InstantiationException, IllegalAccessException {
+    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes)
+    throws InstantiationException, IllegalAccessException {
         // the following code taken from groovy.swing.factory.ImageIcon
 
         if (value == null) {
@@ -90,14 +90,14 @@ class TrayIconFactory extends AbstractFactory {
         return trayIcon
     }
 
-    public void setParent( FactoryBuilderSupport builder, Object parent, Object child ) {
-        if( parent instanceof SystemTray ) {
+    public void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
+        if (parent instanceof SystemTray) {
             parent.add(child)
         }
     }
 
-    public void setChild( FactoryBuilderSupport builder, Object parent, Object child ) {
-        if( child instanceof JPopupMenu ) {
+    public void setChild(FactoryBuilderSupport builder, Object parent, Object child) {
+        if (child instanceof JPopupMenu) {
             parent.setJPopupMenu(child)
         } else {
             throw new RuntimeException("taryIcon only accepts JPopupMenu instances as children")

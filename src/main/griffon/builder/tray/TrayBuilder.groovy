@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------
    TrayBuilder
-   Copyright (C) 2008-2010 Andres Almiray
+   Copyright (C) 2008-2012 Andres Almiray
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as
@@ -19,42 +19,45 @@
 
 package griffon.builder.tray
 
-import griffon.builder.tray.factory.*
+import griffon.builder.tray.factory.SystemTrayFactory
+import griffon.builder.tray.factory.TrayIconFactory
 
 import java.awt.SystemTray
 
 /**
  * @author Andres Almiray
+ * @deprecated factories are injected by TrayBuilderGriffonAddon instead
  */
+@Deprecated
 class TrayBuilder extends FactoryBuilderSupport {
-   public static final String DELEGATE_PROPERTY_OBJECT_ID = "_delegateProperty:id";
-   public static final String DEFAULT_DELEGATE_PROPERTY_OBJECT_ID = "id";
+    public static final String DELEGATE_PROPERTY_OBJECT_ID = "_delegateProperty:id";
+    public static final String DEFAULT_DELEGATE_PROPERTY_OBJECT_ID = "id";
 
-   public TrayBuilder( boolean init = true ) {
-      super( init )
-      if( !SystemTray.isSupported() ) {
-         def os = System.getProperty("os.name")
-         os += " "
-         os += System.getProperty("os.arch") ?: " "
-         os += System.getProperty("os.version") ?: ""
-         throw new IllegalStateException("SystemTray is not supported on ${os.trim()}")
-      }
-      this[DELEGATE_PROPERTY_OBJECT_ID] = DEFAULT_DELEGATE_PROPERTY_OBJECT_ID
-   }
+    public TrayBuilder(boolean init = true) {
+        super(init)
+        if (!SystemTray.isSupported()) {
+            def os = System.getProperty("os.name")
+            os += " "
+            os += System.getProperty("os.arch") ?: " "
+            os += System.getProperty("os.version") ?: ""
+            throw new IllegalStateException("SystemTray is not supported on ${os.trim()}")
+        }
+        this[DELEGATE_PROPERTY_OBJECT_ID] = DEFAULT_DELEGATE_PROPERTY_OBJECT_ID
+    }
 
-   public void registerTray() {
-      addAttributeDelegate(TrayBuilder.&objectIDAttributeDelegate)
-      setVariable("systemTray", SystemTray.systemTray)
-      registerFactory("systemTray", new SystemTrayFactory())
-      registerFactory("trayIcon", new TrayIconFactory())
-   }
+    public void registerTray() {
+        addAttributeDelegate(TrayBuilder.&objectIDAttributeDelegate)
+        setVariable("systemTray", SystemTray.systemTray)
+        registerFactory("systemTray", new SystemTrayFactory())
+        registerFactory("trayIcon", new TrayIconFactory())
+    }
 
-   // taken from groovy.swing.SwingBuilder
-   public static objectIDAttributeDelegate(def builder, def node, def attributes) {
-      def idAttr = builder.getAt(DELEGATE_PROPERTY_OBJECT_ID) ?: DEFAULT_DELEGATE_PROPERTY_OBJECT_ID
-      def theID = attributes.remove(idAttr)
-      if (theID) {
-          builder.setVariable(theID, node)
-      }
-   }
+    // taken from groovy.swing.SwingBuilder
+    public static objectIDAttributeDelegate(def builder, def node, def attributes) {
+        def idAttr = builder.getAt(DELEGATE_PROPERTY_OBJECT_ID) ?: DEFAULT_DELEGATE_PROPERTY_OBJECT_ID
+        def theID = attributes.remove(idAttr)
+        if (theID) {
+            builder.setVariable(theID, node)
+        }
+    }
 }

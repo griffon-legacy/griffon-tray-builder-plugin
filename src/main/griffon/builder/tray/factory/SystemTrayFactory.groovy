@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------
    TrayBuilder
-   Copyright (C) 2008-2010 Andres Almiray
+   Copyright (C) 2008-2012 Andres Almiray
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as
@@ -25,8 +25,8 @@ import java.awt.SystemTray
  * @author Andres Almiray
  */
 class SystemTrayFactory extends AbstractFactory {
-    public Object newInstance( FactoryBuilderSupport builder, Object name, Object value, Map attributes )
-            throws InstantiationException, IllegalAccessException {
+    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes)
+    throws InstantiationException, IllegalAccessException {
         SystemTray.systemTray
     }
 }

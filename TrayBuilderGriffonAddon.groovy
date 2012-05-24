@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------
    TrayBuilder
-   Copyright (C) 2008-2010 Andres Almiray
+   Copyright (C) 2008-2012 Andres Almiray
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as
@@ -21,10 +21,10 @@
  * @author Andres Almiray
  */
 
-import griffon.core.GriffonApplication
-import griffon.builder.tray.factory.*
-import griffon.builder.tray.impl.*
-
+import griffon.builder.tray.factory.BeanFactory
+import griffon.builder.tray.factory.SystemTrayFactory
+import griffon.builder.tray.factory.TrayIconFactory
+import griffon.builder.tray.impl.DummyTrayObject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -34,25 +34,22 @@ import org.slf4j.LoggerFactory
 class TrayBuilderGriffonAddon {
     private static final Logger LOG = LoggerFactory.getLogger('griffon.addon.tray.TrayBuilderGriffonAddon')
 
-    // Map factories = [:]
-    // Map props = [:]
-
     void addonInit(GriffonApplication app) {
         try {
             def systemTrayClass = getClass().classLoader.loadClass("java.awt.SystemTray")
-            if(systemTrayClass.isSupported()) {
+            if (systemTrayClass.isSupported()) {
                 props.systemTray = [
-                   get: { systemTrayClass.getSystemTray() },
-                   set: { }
+                        get: { systemTrayClass.getSystemTray() },
+                        set: { }
                 ]
                 factories.systemTray = new SystemTrayFactory()
                 factories.trayIcon = new TrayIconFactory()
             } else {
                 registerDummyObjects()
             }
-        } catch(ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             registerDummyObjects()
-        } 
+        }
     }
 
     private void registerDummyObjects() {
@@ -62,8 +59,8 @@ class TrayBuilderGriffonAddon {
         os += System.getProperty("os.version") ?: ""
         LOG.warn("SystemTray is not supported on ${os.trim()} - JVM ${System.getProperty('java.version')}")
         props.systemTray = [
-            get: { new DummyTrayObject() },
-            set: { }
+                get: { new DummyTrayObject() },
+                set: { }
         ]
         factories.systemTray = new BeanFactory(DummyTrayObject)
         factories.trayIcon = new BeanFactory(DummyTrayObject)
