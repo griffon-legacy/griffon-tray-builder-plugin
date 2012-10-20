@@ -21,11 +21,11 @@
  * @author Andres Almiray
  */
 class TrayBuilderGriffonPlugin {
-    String version = '0.8'
+    String version = '1.0.0'
     // the version or versions of Griffon the plugin is designed for
-    String griffonVersion = '0.9.5 > *'
+    String griffonVersion = '1.0.0 > *'
     // the other plugins this plugin depends on
-    Map dependsOn = [swing: '0.9.5']
+    Map dependsOn = [swing: '1.0.0']
     // resources that are included in plugin packaging
     List pluginIncludes = []
     // the plugin license
@@ -79,7 +79,7 @@ The following is an example of its usage provided by SwingPad as sample script:
 
         import groovy.ui.Console
         import static java.awt.TrayIcon.MessageType.*
- 
+
         actions {
            action(id: 'cutAction',
               name: 'Cut',
@@ -113,7 +113,7 @@ The following is an example of its usage provided by SwingPad as sample script:
               shortDescription: 'Quit'
            )
         }
- 
+
         systemTray {
           trayIcon(id: "trayIcon",
             resource: "/groovy/ui/ConsoleIcon.png",
